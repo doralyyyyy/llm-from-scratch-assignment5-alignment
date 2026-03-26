@@ -10,6 +10,8 @@ import torch
 from torch import Tensor
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+from .common import FIXTURES_PATH
+
 
 def pytest_addoption(parser):
     parser.addoption("--snapshot-exact", action="store_true", help="Use exact matching standards for snapshot matching")
@@ -210,7 +212,8 @@ def output_strs():
 
 @pytest.fixture
 def model_id():
-    return "/data/a5-alignment/models/Qwen2.5-Math-1.5B"
+    """Local tokenizer path (repo fixtures). Snapshot tests use this tokenizer."""
+    return str(FIXTURES_PATH / "Meta-Llama-3-8B")
 
 
 @pytest.fixture
@@ -219,8 +222,9 @@ def tokenizer(model_id):
 
 
 @pytest.fixture
-def model(model_id):
-    return AutoModelForCausalLM.from_pretrained(model_id)
+def model():
+    """Tiny causal LM shipped in repo fixtures (random `input_ids` in tests stay in-range)."""
+    return AutoModelForCausalLM.from_pretrained(str(FIXTURES_PATH / "tiny-gpt2"))
 
 
 @pytest.fixture

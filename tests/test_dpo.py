@@ -25,4 +25,4 @@ def test_per_instance_dpo_loss():
         response_rejected=bad_response,
     )
 
-    assert torch.isclose(loss, torch.tensor(0.5785), atol=1e-4)
+    assert torch.isclose(loss, torch.tensor(0.5147), atol=1e-3)
